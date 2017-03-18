@@ -1,0 +1,8 @@
+*.class
+*.log
+**/target
+**/.project
+**/.classpath
+**/.cache*
+**/.settings
+**/build
