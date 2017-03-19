@@ -23,9 +23,9 @@ import org.scalatest.junit.JUnitRunner
  * - Start the sbt console and run the "test" command
  * - Right-click this file in eclipse and chose "Run As" - "JUnit Test"
  */
- @RunWith(classOf[JUnitRunner])
-  class ListsSuite extends FunSuite {
- 
+@RunWith(classOf[JUnitRunner])
+class ListsSuite extends FunSuite {
+
   /**
    * Tests are written using the `test` operator which takes two arguments:
    *
@@ -39,7 +39,6 @@ import org.scalatest.junit.JUnitRunner
    */
   test("one plus one is two")(assert(1 + 1 == 2))
 
-
   /**
    * In Scala, it is allowed to pass an argument to a method using the block
    * syntax, i.e. `{ argument }` instead of parentheses `(argument)`.
@@ -47,9 +46,8 @@ import org.scalatest.junit.JUnitRunner
    * This allows tests to be written in a more readable manner:
    */
   test("one plus one is three?") {
-    assert(1 + 1 == 3) // This assertion fails! Go ahead and fix it.
+    assert(1 + 1 == 2) // This assertion fails! Go ahead and fix it.
   }
-
 
   /**
    * One problem with the previous (failing) test is that ScalaTest will
@@ -72,7 +70,7 @@ import org.scalatest.junit.JUnitRunner
    * We recommend to always use the `===` equality operator when writing tests.
    */
   test("details why one plus one is not three") {
-    assert(1 + 1 === 3) // Fix me, please!
+    assert(1 + 1 === 2) // Fix me, please!
   }
 
   /**
@@ -93,14 +91,12 @@ import org.scalatest.junit.JUnitRunner
     else x
   }
 
-
   /**
    * Now we finally write some tests for the list functions that have to be
    * implemented for this assignment. We fist import all members of the
    * `List` object.
    */
   import Lists._
-
 
   /**
    * We only provide two very basic tests for you. Write more tests to make
@@ -114,13 +110,24 @@ import org.scalatest.junit.JUnitRunner
    * every tested aspect of a method.
    */
   test("sum of a few numbers") {
-    assert(sum(List(1,2,0)) === 3)
+    assert(sum(List(1, 2, 0)) === 3)
   }
 
+  test("sum of a few numbers, with some negatives") {
+    assert(sum(List(1, 2, 0, -1, -1, -1)) === 0)
+  }
+  
   test("max of a few numbers") {
     assert(max(List(3, 7, 2)) === 7)
   }
+  
+  test("max of a few negative numbers") {
+    assert(max(List(-3, -7, -2)) === -2)
+  }
 
-
-
+  test("max throws an exception if list is empty") {
+    intercept[NoSuchElementException] {
+      max(List())
+    }
+  }
 }
