@@ -24,7 +24,7 @@ object Main {
     def move(opened: Int, remain: List[Char]): Boolean = {
       if (opened < 0) false
       else if (remain.isEmpty) opened == 0
-      
+
       else {
         def head = remain.head
         def tail = remain.tail
@@ -41,5 +41,9 @@ object Main {
   /**
    * Exercise 3
    */
-  def countChange(money: Int, coins: List[Int]): Int = ???
+  def countChange(money: Int, coins: List[Int]): Int = {
+    if (money < 0 || coins.isEmpty) 0
+    else if (money == 0) 1
+    else countChange(money - coins.head, coins) + countChange(money, coins.tail)
+  }
 }
