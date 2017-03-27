@@ -2,7 +2,6 @@ package funsets
 
 import org.scalatest.FunSuite
 
-
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 
@@ -46,7 +45,6 @@ class FunSetSuite extends FunSuite {
   // test("adding ints") {
   //   assert(1 + 2 === 3)
   // }
-
 
   import FunSets._
 
@@ -110,5 +108,68 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("intersect contains only elements that are in both sets") {
+    new TestSets {
+      val s = intersect(s1, s2)
+      assert(!contains(s, 1), "Intersect 1")
+      assert(!contains(s, 2), "Intersect 2")
+      assert(!contains(s, 3), "Intersect 3")
+    }
+  }
 
+  test("diff contains only elements that in the first set and not in the second set") {
+    new TestSets {
+      val s = diff(s1, s2)
+      assert(contains(s, 1), "Diff 1")
+      assert(!contains(s, 2), "Diff 2")
+      assert(!contains(s, 3), "Diff 3")
+    }
+  }
+
+  test("filtered set contains only elements accepted by the predicate") {
+    new TestSets {
+      val p1 = filter(s1, x => x > 1)
+      assert(!contains(p1, 1), "Filter 1")
+
+      val p2 = filter(s2, x => x > 1)
+      assert(contains(p2, 2), "Filter 2")
+    }
+  }
+
+  test("forall() tests all elements for compliance to rule function ") {
+    new TestSets {
+      val oneToThree = union(s3, union(s1, s2))
+      
+      assert(!forall(oneToThree, x => x % 2 == 0), "Not all are even")
+      assert(forall(oneToThree, x => x > 0 && x < 10), "All are greater than zero and smaller than 10") 
+      
+      val all = union(oneToThree, singletonSet(1000))
+      
+      assert(!forall(all, x => x > 0 && x < 10), "Not all are greater than zero and smaller than 10")       
+    }
+  }
+
+  test("exists() tests all elements for compliance to rule function") {
+    new TestSets {
+      val oneToThree = union(s3, union(s1, s2))
+      
+      assert(exists(oneToThree, x => x % 2 == 0), "At least one element is even")
+      assert(!exists(oneToThree, x => x > 5), "No element is greater than five") 
+      
+      val all = union(oneToThree, singletonSet(1000))
+      
+      assert(exists(all, x => x > 5), "At least one element is greater than five")       
+    }
+  }
+  
+   test("map() transforms each element in the set") {
+    new TestSets {
+      val oneToThree = union(s3, union(s1, s2))
+      val plusHundred = map(oneToThree, x => x + 100)
+            
+      assert(contains(oneToThree, 3), "Original set contains the number three")
+      assert(!contains(plusHundred, 3), "Transformed set does not contain the number three")
+      assert(contains(plusHundred, 103), "Transformed contains the number one-hundred and three")        
+    }
+  } 
 }
